@@ -137,10 +137,17 @@ To maintain code quality, XLA uses `clang-tidy` for static analysis and include
 verification.
 
 ### How to Run
-The clang-tidy config requires the clang-tidy executable to be present in the
-PATH.
+There are two ways to execute checks. Running it against specific targets can be done with:
 
-Execute the checks across your targets using the dedicated profile:
 ```sh
-bazel build //path/to:target --config=clang-tidy
+bazel build --config=clang-tidy //path/to:target1 //path/to:target2
+```
+
+There is a helper script that is also used in CI workflows that runs it against git diff from
+feature branch against the upstream main.
+
+```sh
+# Make sure the main is updated.
+git fetch origin main
+bazel run //build_tools/ci:run_clang_tidy
 ```
